@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritimo Js - Programação Efetiva</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="./codemirror-5.65.14/lib/codemirror.css" />
+    <link rel="stylesheet" href="./codemirror-5.65.14/theme/dracula.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/dist/sweetalert2.min.css">
+    
+    
+
+    <style>
+        .CodeMirror {
+            font-size: 18px;
+            /* border: 1px solid #eee; */
+            height: 90vb;
+         }
+
+         .cm-style1 {
+            color: #ff79c6 !important;
+            }
+        .pe{
+            background-color: #1d2147 !important;
+            color: white !important;
+        }
+
+        #div_log{
+            font-size: 18px;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark pe" >
+        <div class="container-fluid pe" >
+          <a class="navbar-brand" href="#">
+            <img src="./img/logo_PE.png" alt="" width="50" class="d-inline-block align-text-top">
+            Algoritimo JS
+          </a>
+          <div class="dropdown text-end" >
+            <a href="#" class="d-block text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="./img/user.webp" alt="mdo" width="32" height="32" class="rounded-circle"> <span id="nome_aluno"></span>
+            </a>
+            <ul class="dropdown-menu text-small dropdown-menu-end">
+            <li><a class="dropdown-item" href="javascript:algoritimoEfetivo.salvaAluno()">Salvar Códigos</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="javascript:algoritimoEfetivo.logout()">Sair</a></li>
+            </ul>
+        </div>
+        </div>
+      </nav>
+    <div class="container-fluid">
+        <div class="card" >
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <label>Meus Códigos Js</label> 
+                        <div class="input-group mb-2">
+                            <select id="select_codigos" class="form-select " onchange="algoritimoEfetivo.changeCodigo(this)"></select>
+                            <button class="btn btn-outline-secondary" type="button" onclick="algoritimoEfetivo.novoCodigo(this)">Novo</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div style="width: 100%;">
+                            <textarea rows="10" cols="100" id="algoritimo"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-1  text-center ">
+                        
+                        <button type="button" style="width: 100%;" class="btn pe" onclick="algoritimoEfetivo.interpreta()">Executar</button>
+                    </div>
+                    <div class="col-md-5">
+                        <div style="border: dashed 1px; min-height:100%; padding: 10px; background: #ddd;" id="div_log"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-database.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        
+
+    </script>
+
+        
+    <script src="./codemirror-5.65.14/lib/codemirror.js" ></script>
+    <script src="./codemirror-5.65.14/mode/javascript/javascript.js" ></script>
+    <script src="./codemirror-5.65.14/addon/keyword.1.0.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/dist/sweetalert2.all.min.js"></script>
+    <script src="./algoritmo-js.js"></script>
+</body>
+</html>
