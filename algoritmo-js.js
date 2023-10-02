@@ -3,78 +3,34 @@ algoritimoEfetivo =  (()=>{
     let editor;
     let codigoSelecionado;
     
-    const palavrasEstilizar = ['var', 'nao', 'não', 'senão se','senao se', 'se',  'senao', ' E ', ' OU ','paraCada', 'para', 'enquanto', 'faça', 'faca', 'avalie', 'caso', 'parar', 'padrao', 'padrão']
+    //const palavrasEstilizar = ['var', 'nao', 'não', 'senão se','senao se', 'se',  'senao', ' E ', ' OU ','paraCada', 'para', 'enquanto', 'faça', 'faca', 'avalie', 'caso', 'parar', 'padrao', 'padrão']
 
-    const interpreta = ()=>{
+    const interpreta = async ()=>{
 
         limpaLog();
         
         let algoritimo = this.editor.getDoc().getValue(); //document.getElementById('algoritimo').value;
 
         let codigo = algoritimo
-                    .replace(/var /ig, 'let ')
-                    .replace(/ nulo/ig, ' null')
-                    .replace(/senao se\(/ig, 'else if(')
-                    .replace(/senão se\(/ig, 'else if(')
-                    .replace(/se\(/ig, 'if(')
-                    .replace(/senao\{/ig, 'else{')
-                    .replace(/senão{/ig, 'else{')
-                    .replace(/avalie\(/ig, 'switch(')
-                    .replace(/caso /ig, 'case ')
-                    .replace(/parar;/ig, 'break;')
-                    .replace(/padrao:/ig, 'default:')
-                    .replace(/padrão:/ig, 'default:')
-                    .replace(/\sE\s/g, ' && ')
-                    .replace(/\sOU\s/g, ' || ')
-                    .replace(/\para\(/ig, 'for(')
-                    .replace(/\enquanto\(/ig, 'while(')
-                    .replace(/\faça\(/ig, 'do(')
-                    .replace(/\faca\(/ig, 'do(')
-                    .replace(/\.paraCada\(/ig, '.forEach( ')
-                    .replace(/\.tamanho/ig, '.length ')
-                    .replace(/recebe\(/ig, 'await algoritimoEfetivo.recebe(')
-                    .replace(/imprime\(/ig, ' algoritimoEfetivo.log(')
-                    .replace(/alerta\(/ig, 'algoritimoEfetivo.alerta(')
-                    .replace(/funcao /ig, 'function ')
-                    .replace(/função /ig, 'function ')
-
-        //FOR
-        let novoCodigo = codigo;
-        let iFor = codigo.indexOf('for(');
-        let fFor = codigo.indexOf(')', iFor);
-        while(iFor !=-1){
-            let sub = codigo.substring(iFor+4);
-            let iFim = sub.indexOf(')');
-
-            sub = sub.substring(0,iFim);
-            let dados = sub.split(' ');
-            let novo = dados[1].replace('de','let '+dados[0]+'=');
-            novo += dados[2]+";";
-            novo += 'i<'+dados[4]+";";
-            novo += dados[0]+'++';
-
-            novoCodigo = codigo.substring(0,iFor) + 'for('+novo+')' + codigo.substring(fFor+1) ;
-
-            iFor = codigo.indexOf('for(', iFor+4);
-            fFor = codigo.indexOf(')', iFor);
-        }
-        codigo = novoCodigo;
-
-
+                    .replace(/prompt\(/ig, 'await algoritimoEfetivo.recebe(')
+                    .replace(/console.log\(/ig, ' algoritimoEfetivo.log(')
+                    .replace(/alert\(/ig, 'await algoritimoEfetivo.alerta(');
 
         console.log(codigo);
         try {
-            eval(`(async()=>{${codigo}})()`);
+            await eval(`(async()=>{${codigo}})()`);
         } catch (error) {
-            alert('falha no algoritimo.');
-            console.log(error);
+            //alert('falha no algoritimo.');
+            console.error(error);
+            $('#div_erros').show();
+            $('#msg_erros').html(error);
         }
         
     }
 
     const log =  (valor)=>{
         let logAtual =  $('#div_log').html();
-        logAtual += '<br>'+ valor;
+        logAtual += `<p>${valor}</p>`;
          $('#div_log').html(logAtual);
     }
 
@@ -86,18 +42,66 @@ algoritimoEfetivo =  (()=>{
         return fn(...args);
     }
 
-    const alerta = async (valor)=>{
-        setTimeout(() => {
-            alert(valor);
-        }, 20);
+    const alerta = async (msg)=>{
+        $('#msg_alert').html(msg);
+        await timeout(20);
+        var myModal = new bootstrap.Modal(document.getElementById('modalAlert'), {
+            backdrop : false
+        });
+        myModal.show();
     }
 
-    const recebe = async (valor)=>{
+    const recebe = async (msg)=>{
+
+
         await timeout(20);
-        return prompt(valor);
+
+        $('.texto-recebe').html(msg);
+        $('#btn_recebe_confirma').removeClass('clicou').removeClass('validado');
+        $('.input-recebe').val('');
+        var myModal = new bootstrap.Modal(document.getElementById('modalRecebe'), {
+            backdrop : false,
+            keyboard : false
+        });
+        myModal.show();
+
+        $('.modal.show .input-recebe').focus();
+
+        await timeout(300);
+
+
+        while(!$('#btn_recebe_confirma').hasClass('clicou')
+         && !$('#btn_recebe_confirma').hasClass('validado')){
+            await timeout(100);
+            continue;
+        }
+        
+        await timeout(100);
+
+        let valorRecebido = $('.modal.show .input-recebe').val();
+        console.log('vai pegar o valor recebido', valorRecebido);
+
+        myModal.hide();
+
+        return valorRecebido;
+    }
+
+    const okRecebe = (botao)=>{
+
+        const modal = $(botao).closest('.modal');
+        let valor = $(modal).find('.input-recebe').val() || "";
+        valor = valor.trim();
+        if(valor == ""){
+            $(modal).find('.error').show();
+        }else{
+            $(modal).find('.error').hide();
+            $(botao).addClass('clicou');
+            $(botao).addClass('validado');
+        }
     }
     
     const limpaLog = ()=>{
+        $('#div_erros').hide();
         document.getElementById('div_log').innerHTML = '';
     }
 
@@ -263,18 +267,18 @@ algoritimoEfetivo =  (()=>{
     }
 
     const init = ()=>{
-        const estilizar = {};
-        palavrasEstilizar.forEach(x=>{
-            estilizar[x.trim()] = 'style1';
-            estilizar[x.toUpperCase().trim()] = 'style1';
-        })
+        // const estilizar = {};
+        // palavrasEstilizar.forEach(x=>{
+        //     estilizar[x.trim()] = 'style1';
+        //     estilizar[x.toUpperCase().trim()] = 'style1';
+        // })
         
         this.editor = CodeMirror.fromTextArea(
         document.getElementById("algoritimo"), {
             mode: 'javascript',
             lineNumbers: true,
-            theme: "dracula",
-            keyword: estilizar
+            theme: "dracula"
+            // ,keyword: estilizar
         });
 
         
@@ -295,7 +299,8 @@ algoritimoEfetivo =  (()=>{
         logout,
         changeCodigo,
         novoCodigo,
-        salvaAluno
+        salvaAluno,
+        okRecebe
     }
 
 })();

@@ -30,6 +30,24 @@
             font-size: 18px;
         }
 
+        #div_log p{
+            margin-bottom: 3px;
+            border-bottom: solid 1px #eee;
+        }
+
+        .div-recebe{
+            padding: 10px;
+            border: solid 1px #ddd;
+            margin-bottom: 10px;
+        }
+        .div-recebe input{
+            margin: 3px;
+        }
+        .div-recebe .recebe-bts{
+            text-align: right;
+            margin: 10px
+        }
+
     </style>
 </head>
 <body>
@@ -62,6 +80,13 @@
                             <button class="btn btn-outline-secondary" type="button" onclick="algoritimoEfetivo.novoCodigo(this)">Novo</button>
                         </div>
                     </div>
+                    <div class="col-md-3 col-xs-12"></div>
+                    <div class="col-md-5 col-xs-12">
+                        <div class="alert alert-danger" role="alert" style="display:none;" id="div_erros">
+                            Erros no código.
+                            <span id="msg_erros"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -74,19 +99,64 @@
                         <button type="button" style="width: 100%;" class="btn pe" onclick="algoritimoEfetivo.interpreta()">Executar</button>
                     </div>
                     <div class="col-md-5">
-                        <div style="border: dashed 1px; min-height:100%; padding: 10px; background: #ddd;" id="div_log"></div>
+                        <div style="border: solid 1px #ddd; min-height:100%; padding: 10px; " id="div_log"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+      <div class="modal " tabindex="-1" id="modalRecebe" style="padding: 20px">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+                <div>
+                    <p class="texto-recebe"></p>
+                    <input class="form-control input-recebe"  />
+                    <div class="error invalid-feedback">
+                        Informe um valor para continuar
+                      </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary btn-recebe-confirma" 
+                id="btn_recebe_confirma"
+                onclick="algoritimoEfetivo.okRecebe(this)"  >Ok</button>
+              <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modalAlert" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Mensagem</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="msg_alert">
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ok</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-database.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
-        
+        var input = 
+        $('.input-recebe').on("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("btn_recebe_confirma").click();
+        }
+        });
 
     </script>
 
