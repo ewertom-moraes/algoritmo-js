@@ -8,14 +8,14 @@
     <link rel="stylesheet" href="./codemirror-5.65.14/lib/codemirror.css" />
     <link rel="stylesheet" href="./codemirror-5.65.14/theme/dracula.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/dist/sweetalert2.min.css">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
 
     <style>
         .CodeMirror {
-            font-size: 18px;
+            font-size: 1.25rem;
             /* border: 1px solid #eee; */
-            height: 90vb;
+            height: 75vb;
          }
 
          .cm-style1 {
@@ -27,12 +27,19 @@
         }
 
         #div_log{
-            font-size: 18px;
+            font-size: 1.25rem;
+            border:  1px; 
+            height: 75vb; 
+            padding: 20px; 
+            background: #000; 
+            border-radius: 10px;
         }
 
         #div_log p{
-            margin-bottom: 3px;
-            border-bottom: solid 1px #eee;
+            color: #fff;
+            margin-bottom: 1px;
+            font-family: monospace;
+            /* border-bottom: solid 1px #eee; */
         }
 
         .div-recebe{
@@ -46,6 +53,22 @@
         .div-recebe .recebe-bts{
             text-align: right;
             margin: 10px
+        }
+
+        @media (max-width: 1024px) {
+            #div_log{
+                font-size: 1rem;
+                height: 30vb; 
+            } 
+            .CodeMirror {
+                font-size: 1rem;
+                height: 30vb;
+            }
+        }
+
+        .icon-terminal{
+            font-weight: 700;
+            font-family: monospace;
         }
 
     </style>
@@ -70,12 +93,12 @@
         </div>
       </nav>
     <div class="container-fluid">
-        <div class="card" >
+        <div class="card" style="margin-top: 10px;">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-4 col-xs-12">
-                        <label>Meus Códigos Js</label> 
-                        <div class="input-group mb-2">
+                        <label>Meus Códigos</label> 
+                        <div class="input-group mb-3">
                             <select id="select_codigos" class="form-select " onchange="algoritimoEfetivo.changeCodigo(this)"></select>
                             <button class="btn btn-outline-secondary" type="button" onclick="algoritimoEfetivo.novoCodigo(this)">Novo</button>
                         </div>
@@ -89,17 +112,24 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-7">
+                        <div class="row my-2">
+                            <div class="col-6 " >
+                                <h4>Editor de código</h4>
+                            </div>
+                            <div class="col-6 text-end " >
+                                <button type="button"  class="btn btn-success" onclick="algoritimoEfetivo.interpreta()"><i class="fa fa-play"></i> Executar</button>
+                            </div>
+                        </div>
                         <div style="width: 100%;">
                             <textarea rows="10" cols="100" id="algoritimo"></textarea>
                         </div>
                     </div>
-                    <div class="col-md-1  text-center ">
-                        
-                        <button type="button" style="width: 100%;" class="btn pe" onclick="algoritimoEfetivo.interpreta()">Executar</button>
-                    </div>
                     <div class="col-md-5">
-                        <div style="border: solid 1px #ddd; min-height:100%; padding: 10px; " id="div_log"></div>
+                        <div class="row my-2">
+                            <h4 >Resultados Impressos</h4>
+                        </div>
+                        <div style="border: solid 1px #ddd;  padding: 10px; " id="div_log"></div>
                     </div>
                 </div>
             </div>

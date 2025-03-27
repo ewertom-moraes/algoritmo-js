@@ -22,15 +22,23 @@ algoritimoEfetivo =  (()=>{
         } catch (error) {
             //alert('falha no algoritimo.');
             console.error(error);
-            $('#div_erros').show();
-            $('#msg_erros').html(error);
+
+            let html = `<div class="alert alert-danger" role="alert"  id="div_erros">
+                            Erros no código.
+                            <span id="msg_erros">${error}</span>
+                        </div>`;
+
+            $('#div_log').append(html);
+
+            //$('#div_erros').show();
+            //$('#msg_erros').html(error);
         }
         
     }
 
     const log =  (valor)=>{
         let logAtual =  $('#div_log').html();
-        logAtual += `<p>${valor}</p>`;
+        logAtual += `<p> <span class="icon-terminal">></span> ${valor}</p>`;
          $('#div_log').html(logAtual);
     }
 
@@ -101,8 +109,13 @@ algoritimoEfetivo =  (()=>{
     }
     
     const limpaLog = ()=>{
-        $('#div_erros').hide();
-        document.getElementById('div_log').innerHTML = '';
+        $('#div_erros').remove();
+        const divLog = document.getElementById('div_log');
+        divLog.innerHTML = '';
+        $(divLog).hide();
+        setTimeout(()=>{
+            $(divLog).show();
+        }, 1);
     }
 
     const salvaAluno = ()=>{
