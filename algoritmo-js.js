@@ -146,9 +146,12 @@ algoritimoEfetivo =  (()=>{
     }
 
     const verificaDadosAluno = async ()=>{
-        const aluno = getObjLocal('aluno');
+        let aluno = getObjLocal('aluno');
+        let logado = true;
+
         if(!aluno){
-            let aluno = {};
+            logado = false;
+            aluno = {};
             //aluno.email = prompt('E seu e-mail?');
             const { value: email } = await Swal.fire({
                 title: 'Olá, qual seu e-mail?',
@@ -157,69 +160,69 @@ algoritimoEfetivo =  (()=>{
                 inputPlaceholder: 'Entre com seu e-mail'
               });
             aluno.email = email;
+        }
               
             
-            fbService.getDados(aluno, async (alunoBase)=>{
+        fbService.getDados(aluno, async (alunoBase)=>{
 
-                if(alunoBase){
-                    aluno = alunoBase;
-                    aluno.codigosJs ||= [{ nome : 'Inicial', codigo :  '//escreva seu primeiro código javascript aqui'}];
-                    defineCodigoSelecionado(aluno);
-                    setObjLocal('aluno',aluno);
-                    populaSelect(aluno);
-                    atualizaDadosTela();
+            if(alunoBase){
+                aluno = alunoBase;
+                aluno.codigosJs ||= [{ nome : 'Inicial', codigo :  '//escreva seu primeiro código javascript aqui'}];
+                defineCodigoSelecionado(aluno);
+                setObjLocal('aluno',aluno);
+                populaSelect(aluno);
+                atualizaDadosTela();
+                if(!logado){
                     Swal.fire(
                         `Olá, ${aluno.nome}!`,
                         'Bem vindo de volta!',
                         'success'
                         );
-                   // alert('Bem vindo de volta, '+aluno.nome);
-                }else{
-                    const { value: name } =   await Swal.fire({
-                        title: 'Bem vindo ao algoritimo efetivo. Qual seu nome?',
-                        input: 'text',
-                        inputPlaceholder: 'Digite seu primeiro nome'
-                      });
-                    
-                    aluno.nome = name;
-                    //aluno.nome = prompt('Bem vindo ao algoritimo efetivo. Qual seu nome?');
-                    aluno.codigosJs = [];
-                    aluno.codigosJs.push({ nome : 'Inicial', codigo :  '//escreva seu primeiro código javascript aqui'});
-                    defineCodigoSelecionado(aluno);
-                    populaSelect(aluno);
-
-                    fbService.salvaDados(aluno, ()=>{
-                        setObjLocal('aluno',aluno);
-                        atualizaDadosTela();
-                    }, ()=>{
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'nao foi possível salvar seus dados no momento. Mas ainda sim você pode editar algorítimos.'
-                          })
-                        atualizaDadosTela();
-                    });
                 }
-            }, ()=>{
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'tivemos um problema ao tentar identificar você. Mas você ainda pode usar o editor, só que sem salvar seus dados.'
-                  })
-                //alert('Ops, tivemos um problema ao tentar identificar você. Mas você ainda pode usar o editor, só que sem salvar seus dados.');
+            }else{
+                const { value: name } =   await Swal.fire({
+                    title: 'Bem vindo ao algoritimo efetivo. Qual seu nome?',
+                    input: 'text',
+                    inputPlaceholder: 'Digite seu primeiro nome'
+                    });
+                
+                aluno.nome = name;
+                //aluno.nome = prompt('Bem vindo ao algoritimo efetivo. Qual seu nome?');
                 aluno.codigosJs = [];
-                aluno.codigosJs.push({ nome : 'Inicial', codigo :  '//escreva seu primeiro algoritimo aqui'});
+                aluno.codigosJs.push({ nome : 'Inicial', codigo :  '//escreva seu primeiro código javascript aqui'});
                 defineCodigoSelecionado(aluno);
-                atualizaDadosTela();
-            });
-        }else{
+                populaSelect(aluno);
 
+                fbService.salvaDados(aluno, ()=>{
+                    setObjLocal('aluno',aluno);
+                    atualizaDadosTela();
+                }, ()=>{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'nao foi possível salvar seus dados no momento. Mas ainda sim você pode editar algorítimos.'
+                        })
+                    atualizaDadosTela();
+                });
+            }
+        }, ()=>{
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'tivemos um problema ao tentar identificar você. Mas você ainda pode usar o editor, só que sem salvar seus dados.'
+                })
+            //alert('Ops, tivemos um problema ao tentar identificar você. Mas você ainda pode usar o editor, só que sem salvar seus dados.');
+            aluno.codigosJs = [];
+            aluno.codigosJs.push({ nome : 'Inicial', codigo :  '//escreva seu primeiro algoritimo aqui'});
             defineCodigoSelecionado(aluno);
-            populaSelect(aluno);
             atualizaDadosTela();
-        }
+        });
+        // }else{
 
-        
+        //     defineCodigoSelecionado(aluno);
+        //     populaSelect(aluno);
+        //     atualizaDadosTela();
+        // }
     }
 
     const defineCodigoSelecionado = (aluno)=>{
