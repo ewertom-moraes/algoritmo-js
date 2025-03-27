@@ -112,9 +112,9 @@ algoritimoEfetivo =  (()=>{
         $('#div_erros').remove();
         const divLog = document.getElementById('div_log');
         divLog.innerHTML = '';
-        $(divLog).hide();
+        $(divLog).css({"visibility" : "hidden"});
         setTimeout(()=>{
-            $(divLog).show();
+            $(divLog).css({"visibility" : "visible"});
         }, 1);
     }
 
